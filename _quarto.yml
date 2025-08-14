@@ -1,0 +1,20 @@
+project:
+  type: website
+  render:
+    - sesion1.qmd
+    - about.qmd
+
+website:
+  title: "Curso R"
+  navbar:
+    left:
+      - href: about.qmd
+        text: Acerca del curso
+      - href: sesion1.qmd
+        text: Sesión 1
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

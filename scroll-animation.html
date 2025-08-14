@@ -1,0 +1,15 @@
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const h1Links = document.querySelectorAll("#quarto-margin-sidebar #TOC .toc-level-1");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  h1Links.forEach(link => observer.observe(link));
+});
+</script>

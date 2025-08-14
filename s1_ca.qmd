@@ -1,0 +1,702 @@
+---
+title: "Sesión 1 y 2"
+format: html
+---
+
+# Elementos
+
+```{r}
+class(10)
+```
+```{r}
+class(3.5)
+```
+
+
+```{r}
+class("Hola")
+```
+
+```{r}
+class("Que tal?")
+```
+
+
+```{r}
+class(FALSE)
+```
+
+```{r}
+class(TRUE)
+```
+
+## Operaciones básicas con elementos
+
+```{r}
+10 + 10
+```
+
+```{r}
+3.5 - 3
+```
+
+```{r}
+5 * 4
+```
+
+```{r}
+100 / 5
+```
+
+```{r}
+5 ^ 2
+```
+
+```{r}
+sqrt(25)
+```
+
+```{r}
+30 * (4 - 2)
+```
+
+```{r}
+TRUE + TRUE 
+```
+
+```{r}
+FALSE + FALSE 
+```
+
+```{r}
+TRUE + FALSE
+```
+
+
+### Operadores de comparación
+
+```{r}
+5 == 5
+```
+
+```{r}
+5 == 10
+```
+
+```{r}
+5 != 10
+```
+
+```{r}
+5 != 5
+```
+
+```{r}
+10 > 4
+```
+
+```{r}
+10 < 4
+```
+
+```{r}
+10 >= 10
+```
+
+```{r}
+5 <= 6
+```
+
+### Operadores lógicos
+
+```{r}
+!FALSE
+```
+
+```{r}
+(5 > 3) & (20 > 16)
+```
+
+```{r}
+(5 > 3) & (20 > 25)
+```
+
+
+```{r}
+(1 > 3) | (20 > 25)
+```
+
+
+### Los principales tipos de objetos
+
+```{r}
+numero = 5
+```
+
+```{r}
+numero
+```
+
+```{r}
+class(numero)
+```
+
+```{r}
+caracter <- "Hola"
+```
+
+```{r}
+caracter
+```
+
+```{r}
+x_logico = FALSE  
+```
+
+```{r}
+x_logico
+```
+
+```{r}
+x = 10
+
+y = 30
+```
+
+```{r}
+x + y
+```
+
+## Vectores
+
+```{r}
+vector = c(18, 21, 25)
+```
+
+```{r}
+vector_chr = c("Hola", "Como", "Estas")
+```
+
+```{r}
+vector_log = c(T, T, F, F)
+```
+
+```{r}
+vector
+```
+
+```{r}
+vector_chr
+```
+
+```{r}
+vector_log
+```
+
+## Matrices
+
+```{r}
+matriz = matrix(1:6, nrow = 2)
+```
+
+```{r}
+matriz
+```
+
+```{r}
+matriz_2 = matrix(1:6, ncol = 2)
+```
+
+```{r}
+matriz_2
+```
+
+
+##  Dataframes
+
+```{r}
+nombres = c("Ana", "Pedro", "Juan")
+edad = c(19, 23, 32)
+est_civil = c(F, F, T)
+```
+
+```{r}
+df = data.frame(nombres, edad, est_civil)
+```
+
+```{r}
+df
+```
+
+
+# Funciones
+
+```{r}
+sum(4, 5, 6, 8)
+```
+
+```{r}
+mean(c(19, 23, 32), na.rm = T)
+```
+
+```{r}
+mean(c(19, 23, 32, NA), na.rm = T)
+```
+
+```{r}
+mean(c(0.5, 12, 10, 7, 100), trim = 0.2)
+```
+
+```{r}
+mean(c(0.5, 12, 10, 7, 100))
+```
+
+```{r}
+length(c(0.5, 12, 10, 7, 100))
+```
+
+
+# Data Frames
+
+```{r}
+df
+```
+
+```{r}
+df$edad
+```
+
+```{r}
+df$est_civil
+```
+
+## Funciones analíticas
+
+```{r}
+head(iris, n = 3)
+```
+
+
+```{r}
+tail(iris, n = 3)
+```
+
+```{r}
+str(iris)
+```
+
+```{r}
+colnames(iris)
+```
+
+```{r}
+mean(iris$Petal.Length)
+```
+
+```{r}
+summary(iris)
+```
+
+```{r}
+table(iris$Species)
+```
+
+```{r}
+plot(iris$Petal.Length, iris$Petal.Width,
+     col = iris$Species,
+     pch = 19,
+     xlab = "Largo del pétalo",
+     ylab = "Ancho del pétalo",
+     main = "Largo vs. Ancho de los pétalos"
+  )
+```
+
+# Paquetes
+
+
+## Instalar un paquete
+
+```{r}
+#install.packages("dplyr")
+```
+
+## Cargar un paquete
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+psych::describe(iris)
+```
+```{r}
+glimpse(iris)
+```
+
+
+# Importación
+
+```{r}
+library(readr)
+```
+
+```{r}
+encuesta_csv = read_csv("encuesta.csv")
+```
+
+```{r}
+str(encuesta_csv)
+```
+
+
+```{r}
+glimpse(encuesta_csv)
+```
+
+```{r}
+head(encuesta_csv, n = 3)
+```
+
+```{r}
+library(readxl)
+```
+
+```{r}
+encuesta_excel = read_excel("encuesta.xlsx")
+```
+
+
+```{r}
+encuesta_excel
+```
+
+
+# Limpieza
+
+```{r}
+is.na(encuesta_excel$edad)
+```
+
+```{r}
+sum(is.na(encuesta_excel$edad))
+```
+
+```{r}
+library(tidyr)
+```
+
+```{r}
+encuesta_excel = drop_na(encuesta_excel)
+```
+
+```{r}
+encuesta_excel
+```
+
+
+## Estandarización de nombres de columnas
+
+```{r}
+encuesta_prob = read_csv("encuesta_problematica.csv")
+```
+
+```{r}
+encuesta_prob
+```
+
+```{r}
+colnames(encuesta_prob)
+```
+
+```{r}
+encuesta_limpia = janitor::clean_names(encuesta_prob)
+```
+
+```{r}
+encuesta_prob
+```
+
+```{r}
+encuesta_limpia
+```
+
+
+## Eliminación de duplicados
+
+```{r}
+encuesta_limpia = distinct(encuesta_limpia)
+```
+
+```{r}
+encuesta_limpia
+```
+
+# Guardado y exportación de objetos de trabajo
+
+
+## Exportar como archivo `.csv`
+
+```{r}
+write_csv(encuesta_limpia, "encuesta_limpia.csv")
+```
+
+```{r}
+library(writexl)
+```
+
+```{r}
+write_xlsx(encuesta_limpia, "encuesta_limpia.xlsx")
+```
+
+## Guardar todo el entorno de trabajo
+
+```{r}
+saveRDS(encuesta_limpia, file = "datos_limpios.rds")
+```
+
+# Manipulación de datos
+
+
+```{r}
+library(WDI)
+```
+
+```{r}
+df = WDI(
+  country = "all",
+  indicator = c(
+    pib_capita = "NY.GDP.PCAP.CD",
+    esp_vida = "SP.DYN.LE00.IN",
+    poblacion = "SP.POP.TOTL"
+  ),
+  start = 2014,
+  end = 2024,
+  extra = T
+)
+```
+
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+head(df)
+```
+
+```{r}
+df  %>% 
+  head()
+```
+
+```{r}
+df = df %>% 
+  select(country, year, pib_capita,
+         esp_vida, poblacion, region, income)
+```
+
+
+
+```{r}
+df %>% 
+  glimpse()
+```
+
+
+```{r}
+df_agregados = df %>% 
+  filter(region == "Aggregates")
+```
+
+
+```{r}
+df_22 = df %>% 
+  filter(region != "Aggregates", year == 2022) %>% 
+  select(-year)
+```
+
+```{r}
+df_22 %>% 
+  head()
+```
+
+```{r}
+df_22 %>% 
+  arrange(esp_vida) %>% 
+  head(5)
+```
+
+```{r}
+df_22 %>% 
+  arrange(desc(esp_vida)) %>% 
+  head(5)
+```
+
+```{r}
+df_22 %>% 
+  arrange(desc(poblacion)) %>% 
+  head(5)
+```
+
+```{r}
+df_22 %>% 
+  arrange(poblacion) %>% 
+  head(5)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+df_22 %>% 
+  ggplot(aes(x = pib_capita)) +
+  geom_histogram()
+```
+
+
+```{r}
+df_22 = df_22 %>%
+  mutate(
+    log_pib = log(pib_capita)
+  )
+  
+```
+
+
+```{r}
+df_22 %>% 
+  select(pib_capita, log_pib)
+```
+
+
+```{r}
+df_22 %>% 
+  group_by(region)
+```
+
+
+```{r}
+df_22 %>% 
+  reframe(
+    media_pib = mean(pib_capita, na.rm = T)
+  )
+```
+
+```{r}
+df_22 %>% 
+  reframe(
+    media_pib = mean(esp_vida, na.rm = T)
+  )
+```
+
+
+```{r}
+df_22 %>% 
+  group_by(region) %>% 
+  reframe(
+    media_pib = mean(esp_vida, na.rm = T)) %>% 
+  arrange(desc(media_pib))
+```
+
+```{r}
+df_22 %>% 
+  group_by(region) %>% 
+  reframe(
+    mediana_pib = median(esp_vida, na.rm = T)) %>% 
+  arrange(desc(mediana_pib))
+```
+
+```{r}
+df_22 %>% 
+  group_by(region) %>% 
+  reframe(
+    mediana = median(esp_vida, na.rm = T),
+    media = mean(esp_vida, na.rm = T),
+    desv = sd(esp_vida, na.rm = T),
+    ) %>% 
+  arrange(desc(desv))
+```
+
+```{r}
+df_22 %>% 
+  filter(region == "Europe & Central Asia") %>% 
+  arrange(esp_vida) %>% 
+  select(country, esp_vida) %>% 
+  head(3)
+```
+
+```{r}
+df_22 %>% 
+  group_by(region) %>% 
+  arrange(desc(poblacion), .by_group =  T) %>% 
+  slice_head(n = 2) %>% 
+  select(region, country, poblacion) %>% 
+  arrange(region)
+```
+
+```{r}
+library(dlookr)
+```
+
+
+```{r}
+diagnose(df_22)
+```
+
+```{r}
+diagnose_numeric(df_22)
+```
+
+
+```{r}
+df_22 %>% 
+  select(region, income) %>% 
+  diagnose_category()
+```
+
+
+```{r}
+plot_hist_numeric(df_22)
+```
+
+
+```{r}
+plot_bar_category(df_22)
+```
+
+```{r}
+df_22 %>% 
+  select(log_pib, esp_vida, poblacion) %>% 
+  corr.test()
+```
+
+
+
+```{r}
+library(psych)
+```
+
+
+```{r}
+psych::describe(df_22)
+```
+
+```{r}
+describeBy(df_22, group = "region")
+```
+
+```{r}
+df_22 %>% 
+  select(log_pib, esp_vida, poblacion) %>% 
+  corr.test()
+```
+
+
+```{r}
+df_22 %>% 
+  select(log_pib, esp_vida, poblacion) %>% 
+  dlookr::plot_correlate()
+```
+
+
