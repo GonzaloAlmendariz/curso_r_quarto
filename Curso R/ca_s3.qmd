@@ -1,0 +1,488 @@
+---
+title: "ca_s3"
+format: html
+---
+
+```{r}
+library(ggplot2)
+library(WDI)
+library(dplyr)
+```
+
+```{r}
+df = WDI(
+  country = "all",
+  indicator = c(
+    pib_capita = "NY.GDP.PCAP.CD",
+    esp_vida = "SP.DYN.LE00.IN",
+    poblacion = "SP.POP.TOTL"
+  ),
+  start = 2014,
+  end = 2024,
+  extra = T
+)
+```
+
+```{r}
+df_22 = df %>% 
+  filter(region != "Aggregates", year == 2022) %>% 
+  select(-year)
+```
+
+```{r}
+df_22 %>% 
+  head()
+```
+
+```{r}
+ggplot(df_22)
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida))
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida)) +
+  geom_point()
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida)) +
+  geom_point() +
+  scale_x_log10()
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida)) +
+  geom_point(color = "#32CD32", size =  1.5, alpha = 0.9) +
+  scale_x_log10()
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida, color = region)) +
+  geom_point(size =  1.5, alpha = 0.9) +
+  scale_x_log10()
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida, color = region)) +
+  geom_point(size =  1.5, alpha = 0.9) +
+  scale_x_log10() +
+  labs(
+    title = "Relación entre  PBI y la esperanza de vida",
+    x = "PBI per cápita (log10)",
+    y = "Esperanza de vida",
+    color = "Región"
+  )
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida, color = region)) +
+  geom_point(size =  1.5, alpha = 0.9) +
+  scale_x_log10() +
+  labs(
+    title = "Relación entre  PBI y la esperanza de vida",
+    x = "PBI per cápita (log10)",
+    y = "Esperanza de vida",
+    color = "Región"
+  ) +
+  facet_wrap(~region) +
+  theme(legend.position = "none")
+```
+
+```{r}
+grafico = ggplot(df_22, aes(x = pib_capita, y = esp_vida, color = region)) +
+  geom_point(size =  1.5, alpha = 0.9) +
+  scale_x_log10() +
+  labs(
+    title = "Relación entre  PBI y la esperanza de vida",
+    x = "PBI per cápita",
+    y = "Esperanza de vida",
+    color = "Región"
+  ) 
+```
+
+```{r}
+grafico
+```
+
+```{r}
+grafico +
+  theme_minimal()
+```
+
+```{r}
+grafico +
+  theme_bw()
+```
+
+```{r}
+library(ggthemes)
+```
+
+```{r}
+grafico +
+  theme_economist()
+```
+
+# Graficos para variables numéricas
+
+```{r}
+df_22 %>% 
+  arrange(esp_vida) %>% 
+  head()
+```
+
+```{r}
+ggplot(df_22, aes(x = esp_vida)) +
+  geom_histogram(binwidth = 3, fill = "skyblue", color = "black") +
+  labs(title = "Distribución de la esperanza de vida",
+       x = "Esperanza de vida",
+       y = "Frecuencia") +
+  theme_minimal()
+```
+
+```{r}
+df %>%
+  filter(region != "Aggregates") %>%
+  group_by(year, region) %>%
+  reframe(esp_vida_media = mean(esp_vida, na.rm = TRUE)) %>%
+  ggplot(aes(x = year, y = esp_vida_media, color = region)) +
+  geom_line(size = 1) +
+  labs(title = "Evolución de la esperanza de vida por región",
+       x = "Año",
+       y = "Esperanza de vida (promedio)",
+       color = "Región") +
+  theme_minimal() +
+  theme(legend.position = "top")
+```
+
+```{r}
+df_22 %>%
+  ggplot(aes(x = region, y = esp_vida, fill = region)) +
+  geom_boxplot() +
+  labs(title = "Distribución de la esperanza de vida por región",
+       x = "Región",
+       y = "Esperanza de vida") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+# Gráficos para variables categóricas
+
+```{r}
+df_22 %>%
+  ggplot(aes(x = region, fill = region)) +
+  geom_bar() +
+  labs(
+    title = "Frecuencia de observaciones por región",
+    x = "Región",
+    y = "Frecuencia"
+    ) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  coord_flip()
+```
+
+```{r}
+df_22 %>%
+  group_by(region) %>%
+  reframe(vida_media = mean(esp_vida, na.rm = TRUE)) %>%
+  ggplot(aes(x = reorder(region, vida_media),
+             y = vida_media, fill = region)) +
+  geom_col() +
+  labs(title = "Esperanza de vida promedio en 2022",
+       x = "Región",
+       y = "Esperanza de vida") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  coord_flip()
+```
+
+```{r}
+df_22 %>%
+  ggplot(aes(x = region, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(title = "Distribución proporcional de ingresos por región",
+       x = "Región",
+       y = "Proporción",
+       fill = "Tipo de ingreso") +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::percent)
+```
+
+```{r}
+str(df_22$income)
+```
+
+```{r}
+library(forcats)
+```
+
+```{r}
+df_22 = df_22 %>%
+  filter(income != "Not classified") %>%
+  mutate(income = fct_relevel(income,
+                                       "Low income",
+                                       "Lower middle income",
+                                       "Upper middle income",
+                                       "High income"))
+```
+
+```{r}
+str(df_22$income)
+```
+
+```{r}
+df_22 %>%
+  ggplot(aes(x = region, fill = income)) +
+  geom_bar(position = "fill") +
+  labs(title = "Distribución proporcional de ingresos por región",
+       x = "Región",
+       y = "Proporción",
+       fill = "Tipo de ingreso") +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::percent)
+```
+
+## Graficos bivarios
+
+```{r}
+df_22 %>%
+ggplot(aes(x = income, y = esp_vida, fill = income)) +
+geom_boxplot() +
+labs(title = "Distribución de la esperanza de vida por tipo de ingreso",
+x = "Tipo de ingreso",
+y = "Esperanza de vida") +
+theme_minimal() +
+theme(legend.position = "none")
+```
+
+```{r}
+df_22 %>%
+ggplot(aes(x = income, y = esp_vida, fill = income)) +
+geom_violin(trim = FALSE, alpha = 0.9) +
+labs(title = "Distribución de la esperanza de vida por tipo de ingreso",
+x = "Tipo de ingreso",
+y = "Esperanza de vida") +
+theme_minimal() +
+theme(legend.position = "none")
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida)) +
+geom_point(alpha = 0.6) +
+scale_x_log10() +
+labs(x = "PIB per cápita (log10)", y = "Esperanza de vida") +
+theme_minimal()
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida)) +
+geom_point(alpha = 0.6) +
+scale_x_log10() +
+geom_smooth(method = "lm", se = FALSE, color = "red") +
+labs(x = "PIB per cápita (log10)", y = "Esperanza de vida") +
+theme_minimal()
+```
+
+```{r}
+ggplot(df_22, aes(x = income, fill = region)) +
+geom_bar(position = "fill") +
+labs(x = "Nivel de ingreso", y = "Proporción", fill = "Región") +
+theme_minimal()
+```
+
+```{r}
+library(ggsci)
+```
+
+```{r}
+ggplot(df_22, aes(x = region, y = esp_vida, fill = region)) +
+geom_boxplot() +
+scale_fill_nejm() +
+theme_minimal() +
+labs(title = "Boxplot por región con paleta NEJM") +
+  theme(legend.position = "none")
+```
+
+```{r}
+ggplot(df_22, aes(x = region, y = esp_vida, fill = region)) +
+geom_boxplot() +
+scale_fill_lancet() +
+theme_minimal() +
+labs(title = "Boxplot por región con paleta Lacet") +
+  theme(legend.position = "none")
+```
+
+```{r}
+ggplot(df_22, aes(x = region, y = esp_vida, fill = region)) +
+geom_boxplot() +
+scale_fill_jama() +
+theme_minimal() +
+labs(title = "Boxplot por región con paleta Jama") +
+  theme(legend.position = "none")
+
+```
+
+```{r}
+ggplot(df_22, aes(x = esp_vida, fill = region)) +
+geom_histogram(binwidth = 3, color = "black") +
+scale_fill_viridis_d(option = "C") +
+facet_wrap(~ region) +
+theme_minimal() +
+labs(title = "Histograma por región con viridis",
+x = ''
+, y = '') +
+theme(legend.position = 'none')
+```
+
+```{r}
+library(patchwork)
+```
+
+```{r}
+p1 = ggplot(df_22, aes(x = esp_vida)) +
+geom_density(fill = "darkgreen", alpha = 0.7) +
+labs(title = "Distribución de la esperanza de vida") +
+theme_minimal()
+```
+
+```{r}
+p2 = ggplot(df_22, aes(x = region, y = esp_vida)) +
+geom_boxplot(fill = "darkgreen", alpha = 0.7) +
+labs(title = "Esperanza de vida por región", x = "Región", y = "Esperanza de vida") +
+theme_minimal()
+```
+
+```{r}
+p3 = df_22 %>%
+filter(income != "Not classified") %>%
+ggplot(aes(x = income, y = esp_vida)) +
+geom_violin(fill = "darkgreen", alpha = 0.7) +
+labs(title = "Esperanza de vida por nivel de ingreso", x = "Nivel de ingrsos") +
+theme_minimal()
+```
+
+```{r}
+(p1 | p2) / p3
+```
+
+```{r}
+library(ggthemes)
+```
+
+```{r}
+ggplot(df_22, aes(x = region, y = esp_vida, fill = region)) +
+geom_boxplot() +
+theme_economist() +
+scale_fill_economist() +
+labs(title = "Estilo The Economist")
+```
+
+```{r}
+ggplot(df_22, aes(x = region, y = esp_vida, fill = region)) +
+geom_boxplot() +
+theme_economist() +
+scale_fill_wsj() +
+labs(title = "Estilo WSJ")
+```
+
+```{r}
+ggplot(df_22, aes(x = region, y = esp_vida, fill = region)) +
+geom_boxplot() +
+theme_economist() +
+scale_fill_canva() +
+labs(title = "Estilo Canva")
+```
+
+```{r}
+library(ggtext)
+library(glue)
+```
+
+```{r}
+colores = c(
+  "Sub-Saharan Africa" = "#E63946",
+  "Middle East & North Africa" = "#F28482",
+  "South Asia" = "#2A9D8F",
+  "East Asia & Pacific" = "#8AC926",
+  "Europe & Central Asia" = "#F4A261",
+  "Latin America & Caribbean" = "#457B9D",
+  "North America" = "#A17DB2"
+)
+```
+
+```{r}
+titulo = glue(
+  "Esperanza de vida por región:<br>",
+  "<span style='color:{colores['Sub-Saharan Africa']}'>África Subsahariana</span>, ",
+  "<span style='color:{colores['Middle East & North Africa']}'>MENA</span>, ",
+  "<span style='color:{colores['South Asia']}'>Asia del Sur</span>, ",
+  "<span style='color:{colores['East Asia & Pacific']}'>Asia Oriental y Pacífico</span>, ",
+  "<span style='color:{colores['Europe & Central Asia']}'>Europa y Asia Central</span>, ",
+  "<span style='color:{colores['Latin America & Caribbean']}'>América Latina</span>, ",
+  "<span style='color:{colores['North America']}'>Norteamérica</span>"
+)
+```
+
+```{r}
+df_22 = df_22 %>%
+  mutate(region = factor(region, levels = names(colores)))
+
+# Luego graficamos
+ggplot(df_22, aes(x = region, y = esp_vida, fill = region)) +
+  geom_boxplot() +
+  scale_fill_manual(values = colores) +
+  theme_minimal() +
+  theme(
+    plot.title = element_markdown(),
+    legend.position = "none"
+  ) +
+  ggtitle(titulo)
+```
+
+```{r}
+library(scales)
+```
+
+```{r}
+ggplot(df_22, aes(x = pib_capita, y = esp_vida)) +
+geom_point(color = "steelblue") +
+scale_x_continuous(labels = dollar_format(prefix = "US$")) +
+theme_minimal() +
+labs(title = "Relación entre PIB per cápita y esperanza de vida",
+x = ""
+, y = "Esperanza de vida")
+```
+
+```{r}
+library(gghighlight)
+```
+
+```{r}
+paises_vecinos = c("Peru", "Brasil", "Colombia",
+"Ecuador", "Chile", "Argentina")
+```
+
+```{r}
+df_22 %>%
+ggplot(aes(x = log(pib_capita), y = esp_vida, label = country)) +
+geom_point(color = "gray30", size = 2) +
+gghighlight(country %in% paises_vecinos,
+label_key = country,
+unhighlighted_params = list(alpha = 0.4)) +
+theme_minimal() +
+labs(
+title = "Países sudamericanos seleccionados resaltados",
+subtitle = "Relación entre PBI per cápita (log) y esperanza de vida",
+x = "PBI per cápita (log10)",
+y = "Esperanza de vida"
+)
+```
+
+```{r}
+ggsave("grafico.png", plot = p1,
+width = 8, height = 6, dpi = 300)
+```
