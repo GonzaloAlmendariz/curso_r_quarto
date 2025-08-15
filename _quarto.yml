@@ -9,10 +9,10 @@ website:
   title: "Curso R"
   navbar:
     left:
-      - href: about.qmd
-        text: Acerca del curso
-      - href: sesion1.qmd
-        text: Sesión 1
+    - href: about.html
+      text: Acerca del curso
+    - href: sesion1.html
+      text: Sesión 1
 
 format:
   html:
