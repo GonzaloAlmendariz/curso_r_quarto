@@ -8,11 +8,11 @@ project:
 website:
   title: "Curso R"
   navbar:
-    left:
-    - href: about.html
-      text: Acerca del curso
-    - href: sesion1.html
-      text: Sesión 1
+    right:
+      - text: "Acerca del curso"
+        href: about.html
+      - text: "Sesión 1"
+        href: sesion1.html
 
 format:
   html:

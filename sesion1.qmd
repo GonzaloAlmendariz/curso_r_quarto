@@ -4,7 +4,6 @@ lang: es
 format:
   html:
     theme: cosmo
-    css: styles.css          
     toc: true
     code-copy: true          
     code-block-bg: "#f8f9fa"
@@ -578,7 +577,7 @@ head(iris, 4)
 Su variables son:
 
 | Variable       | Significado                                              |
-|----------------|----------------------------------------------------------|
+|------------------|------------------------------------------------------|
 | `Sepal.Length` | Largo del sépalo (en cm)                                 |
 | `Sepal.Width`  | Ancho del sépalo (en cm)                                 |
 | `Petal.Length` | Largo del pétalo (en cm)                                 |
