@@ -17,6 +17,7 @@ format:
     geometry: inner=3.2cm, outer=2.5cm, top=2.5cm, bottom=2.8cm, includeheadfoot
     pdf-engine: pdflatex
     include-in-header: tex/style-pdf.tex
+    output-file: docs/sesion1.pdf
 execute:
   echo: true
   output: true
